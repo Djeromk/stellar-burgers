@@ -13,20 +13,24 @@ import {
   resetConstructor,
   selectBuilder
 } from '../../services/slices/constructor-slice';
-import { selectIsAuthChecked } from '../../services/slices/user-slice';
+import { selectIsAuth } from '../../services/slices/user-slice';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
 
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const orderModalData = useSelector(selectOrderModalData);
-  const isAuthChecked = useSelector(selectIsAuthChecked);
+  const isAuth = useSelector(selectIsAuth);
   const orderRequest = useSelector(selectOrderRequest);
   const constructorItems = useSelector(selectBuilder);
   const navigate = useNavigate();
 
   const onOrderClick = () => {
-    if (!isAuthChecked) {
+    console.log(isAuth);
+
+    if (!isAuth) {
+      console.log('NAVIGATE TO LOGIN');
+
       navigate('/login');
       return;
     }

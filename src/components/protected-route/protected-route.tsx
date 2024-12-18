@@ -2,7 +2,7 @@ import { useSelector } from '../../services/store';
 import { Navigate, useLocation } from 'react-router';
 import { Preloader } from '../ui';
 import {
-  selectFetchSuccess,
+  selectIsAuth,
   selectIsAuthChecked,
   selectIsLoading,
   selectUserData
@@ -18,20 +18,25 @@ export const ProtectedRoute = ({
   children
 }: ProtectedRouteProps) => {
   const isAuthChecked = useSelector(selectIsAuthChecked);
-  const isLoading = useSelector(selectIsLoading);
+  //const isLoading = useSelector(selectFetchSuccess);
+  //const fetchSuccess = useSelector(selectFetchSuccess);
   const user = useSelector(selectUserData);
   const location = useLocation();
 
-  if (!isAuthChecked && isLoading) {
+  if (!isAuthChecked) {
+    console.log('LOADING');
+
     return <Preloader />;
   }
 
-  if (onlyUnAuth && (user?.email || user?.name)) {
+  if (onlyUnAuth && user!.email && user!.name) {
+    console.log('NAVIGATE FROM LOGIN TO PAGE');
+
     const from = location.state?.from || { pathname: '/' };
     // const { background } = from?.state || null;
     return <Navigate replace to={from} />;
   }
-  if (!onlyUnAuth && (!user?.email || !user?.name)) {
+  if (!onlyUnAuth && (!user!.email || !user!.name)) {
     console.log('NAVIGATE FROM PAGE TO LOGIN');
     return <Navigate replace to='/login' />;
   }

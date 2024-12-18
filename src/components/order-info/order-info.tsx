@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch } from '../../services/store';
 import {
   getOrder,
+  resetOrder,
   selectOrderModalData
 } from '../../services/slices/order-slice';
 import { selectIngredients } from '../../services/slices/ingredient-slice';
@@ -16,6 +17,10 @@ export const OrderInfo: FC = () => {
   const id = useParams();
   useEffect(() => {
     dispatch(getOrder(Number(id.number)));
+
+    return () => {
+      dispatch(resetOrder());
+    };
   }, [dispatch]);
   /** TODO: взять переменные orderData и ingredients из стора */
   const orderData = useSelector(selectOrderModalData);
